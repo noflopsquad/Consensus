@@ -20,4 +20,9 @@ describe 'A Consensus' do
     expect(consensus.is_involved? :proposer).to eq true
     expect(consensus.is_involved? :not_the_proposer).to eq false
   end
+
+  it "accepts question in the introduccion phase" do
+    consensus.address(:clarifying_question)
+    expect(consensus.any_questions?).to eq true
+  end
 end
