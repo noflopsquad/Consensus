@@ -1,4 +1,3 @@
-require './lib/circle'
 require './lib/proposal'
 require './lib/consensus'
 
@@ -17,14 +16,8 @@ describe 'A Consensus' do
     expect(consensus.status).to eq 'Introduction'
   end
 
-  it 'has a circle' do
-    expect(consensus.participants).to be_a Circle
-  end
-
   it 'has the proposer as a participant' do
-    the_circle = consensus.participants
-
-    expect(the_circle.involved? :proposer).to eq true
-    expect(the_circle.involved? :not_the_proposer).to eq false
+    expect(consensus.is_involved? :proposer).to eq true
+    expect(consensus.is_involved? :not_the_proposer).to eq false
   end
 end

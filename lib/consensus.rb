@@ -1,3 +1,5 @@
+require './lib/circle'
+
 class Consensus
   def initialize proposal
     check_proposal proposal
@@ -9,11 +11,12 @@ class Consensus
     'Introduction'
   end
 
-  def participants
-    @circle
+  def is_involved? person
+    @circle.involved? person
   end
 
   private
+
   def check_proposal subject
     raise "needs a proposal" unless subject.is_a? Proposal
   end
