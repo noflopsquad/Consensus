@@ -1,9 +1,11 @@
 require './lib/proposal'
 require './lib/consensus'
+require './lib/question'
 
 describe 'A Consensus' do
   let(:proposal) { Proposal.new(:proposer) }
   let(:consensus) { Consensus.new(proposal) }
+  let(:clarifying_question) { Question.new(:questioner) }
 
   it 'needs a proposal' do
     non_proposal = nil
@@ -22,7 +24,14 @@ describe 'A Consensus' do
   end
 
   it "accepts question in the introduccion phase" do
-    consensus.address(:clarifying_question)
+    consensus.address(clarifying_question)
     expect(consensus.any_questions?).to eq true
   end
+
+  it "considers the questioner involved" do
+    expect(consensus.is_involved? :questioner).to eq false
+    consensus.address(clarifying_question)
+    expect(consensus.is_involved? :questioner).to eq true
+  end
+
 end

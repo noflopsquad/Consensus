@@ -1,5 +1,6 @@
 require './lib/circle'
 require './lib/questionnaire'
+require './lib/question'
 
 class Consensus
   def initialize proposal
@@ -19,6 +20,7 @@ class Consensus
 
   def address question
     @questions.add question
+    @circle.involve question.whose
   end
 
   def any_questions?
