@@ -34,4 +34,32 @@ describe 'A Consensus' do
     expect(consensus.is_involved? :questioner).to eq true
   end
 
+  it "address clarifying questions to the proposer" do
+    consensus.address(clarifying_question)
+    expect(clarifying_question.whom).to eq :proposer
+  end
+end
+
+describe 'A Question' do
+  let(:question) { Question.new(:questioner) }
+  
+  it 'starts unanswered' do
+    expect(question.replied?).to eq false
+  end
+
+  it 'can be reply' do
+    question.reply :any_person
+    expect(question.replied?).to eq true
+  end
+
+  it "can be addressed" do
+    question.address :person
+    expect(question.whom).to eq :person
+  end
+
+  it "only could be replied by the addressed person if addressed" do
+    question.address :person
+    expect{question.reply(:other_than_addressed)}.to raise_error 'The question is addressed to another person'
+  end
+
 end
