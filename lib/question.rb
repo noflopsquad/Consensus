@@ -4,7 +4,7 @@ class Question
   
   def initialize questioner
     @questioner = questioner
-    @replied = false
+    @answered = false
     @addressed_to = nil
   end
 
@@ -12,13 +12,13 @@ class Question
     @questioner
   end
 
-  def replied?
-    @replied
+  def answered?
+    @answered
   end
 
-  def reply by
-    raise NOT_ALLOWED unless allowed_to_reply? by 
-    @replied = true
+  def answer by
+    raise NOT_ALLOWED unless allowed_to_answer? by 
+    @answered = true
   end
 
   def whom
@@ -35,7 +35,7 @@ class Question
     @addressed_to.nil?
   end
 
-  def allowed_to_reply? by
-    (@addressed_to == by) || not_addressed?
+  def allowed_to_answer? person
+    (@addressed_to == person) || not_addressed?
   end
 end
