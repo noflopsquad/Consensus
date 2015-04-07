@@ -39,27 +39,3 @@ describe 'A Consensus' do
     expect(clarifying_question.whom).to eq :proposer
   end
 end
-
-describe 'A Question' do
-  let(:question) { Question.new(:questioner) }
-  
-  it 'starts unanswered' do
-    expect(question.answered?).to eq false
-  end
-
-  it 'can be reply' do
-    question.answer :any_person
-    expect(question.answered?).to eq true
-  end
-
-  it "can be addressed" do
-    question.address :person
-    expect(question.whom).to eq :person
-  end
-
-  it "only could be answered by the addressed person if addressed" do
-    question.address :person
-    expect{question.answer(:other_than_addressed)}.to raise_error 'The question is addressed to another person'
-  end
-
-end
