@@ -27,6 +27,10 @@ describe 'A Question' do
       expect{question.accept :questioner}.to raise_error 'must be answered before' 
   end
 
+  it "must be answered to be rejected " do
+      expect{question.reject :questioner, :any_reason}.to raise_error 'must be answered before' 
+  end
+
   describe 'when answered' do
     let(:answered) {question.answer :anyone
                             question}
@@ -37,7 +41,33 @@ describe 'A Question' do
     end
 
     it "must be accepted by the questioner" do
-      expect{answered.accept :anybody}.to raise_error 'must be accepted by the questioner'
+      expect{answered.accept :anybody}.to raise_error 'this action must be made by the questioner'
+    end
+
+    it "can be rejected with a reason" do
+      answered.reject :questioner,:any_reason
+      expect(answered.rejected?).to eq true  
+    end
+
+    it "must be rejected by the questioner" do
+      expect{answered.reject :anybody, :any_reason}.to raise_error 'this action must be made by the questioner'
+    end
+
+  end
+
+  describe 'when rejected' do
+    let(:rejected) {question.answer :anyone
+                    question.reject :questioner,:any_reason
+                    question}
+    
+    it "can be answered again" do
+      rejected.answer :anybody
+      expect(rejected.answered?).to eq true
+    end
+
+    it "can be accepted" do
+      rejected.accept :questioner
+      expect(rejected.accepted?).to eq true
     end
 
   end

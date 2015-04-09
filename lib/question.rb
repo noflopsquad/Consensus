@@ -2,7 +2,7 @@ class Question
 
   NOT_ALLOWED ="The question is addressed to another person"
   UNANSWERED = 'must be answered before'
-  NOT_QUESTIONER = 'must be accepted by the questioner'
+  NOT_QUESTIONER = 'this action must be made by the questioner'
   
   def initialize questioner
     @questioner = questioner
@@ -15,11 +15,11 @@ class Question
   end
 
   def answered?
-    @state == :answered || accepted?
+    @state == :answered || accepted? || rejected?
   end
 
   def answer by
-    raise NOT_ALLOWED unless allowed_to_answer? by 
+    check_allowed by 
     @state = :answered
   end
 
@@ -39,13 +39,35 @@ class Question
     !accepted?
   end
 
+  def rejected?
+    @state == :rejected
+  end
+
   def accept by
-    raise UNANSWERED unless answered?
-    raise NOT_QUESTIONER unless questioner? by
+    check_answered
+    check_is_questioner by
     @state = :accepted
+  end
+
+  def reject by ,reason
+    check_answered
+    check_is_questioner by
+    @state = :rejected
   end
   
   private 
+
+  def check_answered
+    raise UNANSWERED unless answered?
+  end
+
+  def check_is_questioner person
+    raise NOT_QUESTIONER unless questioner? person
+  end
+
+  def check_allowed person
+    raise NOT_ALLOWED unless allowed_to_answer? person 
+  end
   
   def not_addressed?
     @addressed_to.nil?
