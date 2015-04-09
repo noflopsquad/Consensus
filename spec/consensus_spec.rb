@@ -38,4 +38,18 @@ describe 'A Consensus' do
     consensus.address(clarifying_question)
     expect(clarifying_question.whom).to eq :proposer
   end
+
+  it "considers open any unaccepted question" do
+    consensus.address(clarifying_question)
+    clarifying_question.answer :proposer
+    expect(consensus.any_questions?).to eq true
+  end
+
+  it "considers closed accepted questions" do
+    consensus.address(clarifying_question)
+    clarifying_question.answer :proposer
+    clarifying_question.accept :questioner
+    expect(consensus.any_questions?).to eq false
+  end
+
 end

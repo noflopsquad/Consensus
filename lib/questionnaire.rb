@@ -8,6 +8,6 @@ class Questionnaire
   end
 
   def any_unresolved?
-    !@questions.empty?
+    @questions.any? {|question| question.unaccepted?}
   end
 end

@@ -35,6 +35,10 @@ class Question
     @state == :accepted
   end
 
+  def unaccepted?
+    !accepted?
+  end
+
   def accept by
     raise UNANSWERED unless answered?
     raise NOT_QUESTIONER unless questioner? by
