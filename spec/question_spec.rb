@@ -5,7 +5,7 @@ describe 'A Question' do
     expect(question.answered?).to eq false
   end
 
-  it 'can be reply' do
+  it 'can be answered' do
     question.answer :any_person
     expect(question.answered?).to eq true
   end
