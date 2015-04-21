@@ -1,3 +1,5 @@
+require './lib/exceptions'
+
 class Question
 
   NOT_ALLOWED ="The question is addressed to another person"
@@ -58,15 +60,15 @@ class Question
   private 
 
   def check_answered
-    raise UNANSWERED unless answered?
+    raise Unanswered.new unless answered?
   end
 
   def check_is_questioner person
-    raise NOT_QUESTIONER unless questioner? person
+    raise NotQuestioner.new unless questioner? person
   end
 
   def check_allowed person
-    raise NOT_ALLOWED unless allowed_to_answer? person 
+    raise NotAllowed.new unless allowed_to_answer? person 
   end
   
   def not_addressed?
