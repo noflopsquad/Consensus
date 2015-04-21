@@ -1,14 +1,15 @@
 require './lib/exceptions'
+require './lib/question_state'
+require './lib/asked'
+require './lib/answered'
+require './lib/accepted'
+require './lib/rejected'
 
 class Question
-
-  NOT_ALLOWED ="The question is addressed to another person"
-  UNANSWERED = 'must be answered before'
-  NOT_QUESTIONER = 'this action must be made by the questioner'
   
   def initialize questioner
     @questioner = questioner
-    @state = :asked
+    @the_state = Asked.new
     @addressed_to = nil
   end
 
@@ -17,12 +18,12 @@ class Question
   end
 
   def answered?
-    @state == :answered || accepted? || rejected?
+    @the_state.answered?
   end
 
   def answer by
     check_allowed by 
-    @state = :answered
+    @the_state = @the_state.answer
   end
 
   def whom
@@ -34,27 +35,27 @@ class Question
   end
 
   def accepted?
-    @state == :accepted
+    @the_state.accepted?
   end
 
   def unaccepted?
-    !accepted?
+    !@the_state.accepted?
   end
 
   def rejected?
-    @state == :rejected
+    @the_state.rejected?
   end
 
   def accept by
     check_answered
     check_is_questioner by
-    @state = :accepted
+    @the_state = @the_state.accept
   end
 
   def reject by ,reason
     check_answered
     check_is_questioner by
-    @state = :rejected
+    @the_state = @the_state.reject
   end
   
   private 
