@@ -52,4 +52,15 @@ describe 'A Consensus' do
     expect(consensus.any_questions?).to eq false
   end
 
+  it "the introduction phase has a minimum duration " do
+    minimum_duration_in_days = 2
+    expect{consensus.next_phase}.to raise_error "Minimum duration not reached yet"
+    time_passes minimum_duration_in_days + 1
+    expect{consensus.next_phase}.not_to raise_error
+  end
+
+  def time_passes days
+    new_time = Time.now + (days*24*60*60)
+    Time.stub(:now).and_return(Time.new(new_time.to_i))
+  end
 end

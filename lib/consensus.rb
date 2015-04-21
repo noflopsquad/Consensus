@@ -2,11 +2,14 @@ require './lib/circle'
 require './lib/questionnaire'
 
 class Consensus
+  MINIMUM_TIME = 2
+  SECONDS_IN_A_DAY = (24*60*60)
 
   def initialize proposal
     accept_proposal proposal
     initialize_questions
     involve proposal.whose
+    calculate_expiration
   end
 
   def status
@@ -25,8 +28,24 @@ class Consensus
   def any_questions?
     questions.any_unresolved?
   end
-  
+
+  def next_phase
+    check_ready_to_change
+  end
+
   private
+
+  def check_ready_to_change
+    raise "Minimum duration not reached yet" unless minimum_time_has_passed?
+  end
+
+  def minimum_time_has_passed?
+    Time.now.to_i >= @expiration_time
+  end
+
+  def calculate_expiration
+    @expiration_time = Time.now.to_i + (MINIMUM_TIME * SECONDS_IN_A_DAY)
+  end
 
   def check_proposal subject
     raise "needs a proposal" unless subject.is_a? Proposal
