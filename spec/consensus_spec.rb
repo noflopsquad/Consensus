@@ -66,6 +66,6 @@ describe 'A Consensus' do
 
   def time_passes days
     new_time = Time.now + (days*24*60*60)
-    Time.stub(:now).and_return(Time.new(new_time.to_i))
+    allow(Time).to receive(:now).and_return(Time.new(new_time.to_i))
   end
 end
