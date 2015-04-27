@@ -36,7 +36,7 @@ class Consensus
   private
 
   def check_ready_to_change
-    raise "Minimum duration not reached yet" unless minimum_time_has_passed?
+    raise MinimumDurationNotReached.new unless minimum_time_has_passed?
   end
 
   def minimum_time_has_passed?
@@ -48,7 +48,7 @@ class Consensus
   end
 
   def check_proposal subject
-    raise "needs a proposal" unless subject.is_a? Proposal
+    raise NotProposal.new unless subject.is_a? Proposal
   end
 
   def accept_proposal proposal

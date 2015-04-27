@@ -13,7 +13,7 @@ describe 'A Consensus' do
   it 'needs a proposal' do
     non_proposal = nil
 
-    expect{Consensus.new(non_proposal)}.to raise_error "needs a proposal"
+    expect{Consensus.new(non_proposal)}.to raise_error "Needs a proposal"
     expect{Consensus.new(@proposal)}.to_not raise_error
   end
 
