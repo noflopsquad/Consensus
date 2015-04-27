@@ -17,13 +17,14 @@ describe 'A Consensus' do
     expect{Consensus.new(@proposal)}.to_not raise_error
   end
 
-  it 'starts with an introduction' do
-    expect(@consensus.status).to eq 'Introduction'
-  end
 
   it 'has the proposer as a participant' do
     expect(@consensus.is_involved? :proposer).to eq true
     expect(@consensus.is_involved? :not_the_proposer).to eq false
+  end
+
+  it 'starts with an introduction phase' do
+    expect(@consensus.status).to eq 'Introduction'
   end
 
   it "accepts question in the introduccion phase" do
@@ -60,8 +61,25 @@ describe 'A Consensus' do
   it "the introduction phase has a minimum duration " do
     minimum_duration_in_days = 2
     expect{@consensus.next_phase}.to raise_error "Minimum duration not reached yet"
-    time_passes minimum_duration_in_days + 1
-    expect{@consensus.next_phase}.not_to raise_error
+  end
+
+  describe "when introduction phase minimum duration has passed" do
+
+    before do
+      minimum_duration_in_days = 2
+      time_passes minimum_duration_in_days + 1
+      @consensus.address(@clarifying_question)
+    end
+
+    it "can not go to next phase whith unaccepted questions " do
+      expect{@consensus.next_phase}.to raise_error 'There are unaccepted questions'
+    end
+
+    it "can  go to next phase whith all questions are accepted " do
+      @clarifying_question.answer :proposer 
+      @clarifying_question.accept :questioner
+      expect{@consensus.next_phase}.not_to raise_error 
+    end
   end
 
   def time_passes days

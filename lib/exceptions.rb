@@ -27,3 +27,9 @@ class MinimumDurationNotReached < Exception
     super 'Minimum duration not reached yet'
   end
 end
+
+class UnacceptedQuestions < Exception
+  def initialize
+    super 'There are unaccepted questions'
+  end
+end

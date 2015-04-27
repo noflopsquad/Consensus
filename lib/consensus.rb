@@ -37,6 +37,7 @@ class Consensus
 
   def check_ready_to_change
     raise MinimumDurationNotReached.new unless minimum_time_has_passed?
+    raise UnacceptedQuestions.new if any_questions?
   end
 
   def minimum_time_has_passed?
