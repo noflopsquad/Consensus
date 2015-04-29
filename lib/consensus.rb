@@ -1,19 +1,19 @@
 require './lib/commons/circle'
 require './lib/commons/questionnaire'
+require './lib/commons/phase'
+
 
 class Consensus
-  MINIMUM_TIME = 2
-  SECONDS_IN_A_DAY = (24*60*60)
 
   def initialize proposal
+    start_introduction_phase 
     accept_proposal proposal
     initialize_questions
     involve proposal.whose
-    calculate_expiration
   end
 
   def status
-    'Introduction'
+    say_status
   end
 
   def is_involved? person
@@ -31,21 +31,25 @@ class Consensus
 
   def next_phase
     check_ready_to_change
+    to_next_phase
   end
 
   private
+  
+  def say_status
+    @status.to_s
+  end
+
+  def start_introduction_phase
+    @status = Introduction.new
+  end
+
+  def to_next_phase
+      @status = @status.next
+  end
 
   def check_ready_to_change
-    raise MinimumDurationNotReached.new unless minimum_time_has_passed?
     raise UnacceptedQuestions.new if any_questions?
-  end
-
-  def minimum_time_has_passed?
-    Time.now.to_i >= @expiration_time
-  end
-
-  def calculate_expiration
-    @expiration_time = Time.now.to_i + (MINIMUM_TIME * SECONDS_IN_A_DAY)
   end
 
   def check_proposal subject

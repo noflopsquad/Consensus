@@ -80,6 +80,13 @@ describe 'A Consensus' do
       @clarifying_question.accept :questioner
       expect{@consensus.next_phase}.not_to raise_error 
     end
+
+    it "has as new phase the First discussion level " do
+      @clarifying_question.answer :proposer 
+      @clarifying_question.accept :questioner
+      @consensus.next_phase
+      expect(@consensus.status).to eq 'First discussion level' 
+    end
   end
 
   def time_passes days
