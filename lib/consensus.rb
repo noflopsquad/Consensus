@@ -1,5 +1,5 @@
-require './lib/circle'
-require './lib/questionnaire'
+require './lib/commons/circle'
+require './lib/commons/questionnaire'
 
 class Consensus
   MINIMUM_TIME = 2

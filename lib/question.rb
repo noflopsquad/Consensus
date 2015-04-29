@@ -1,9 +1,9 @@
-require './lib/exceptions'
-require './lib/question_state'
-require './lib/asked'
-require './lib/answered'
-require './lib/accepted'
-require './lib/rejected'
+require './lib/commons/exceptions'
+require './lib/question_states/question_state'
+require './lib/question_states/asked'
+require './lib/question_states/answered'
+require './lib/question_states/accepted'
+require './lib/question_states/rejected'
 
 class Question
   
