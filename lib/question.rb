@@ -39,7 +39,7 @@ class Question
   end
 
   def unaccepted?
-    !@the_state.accepted?
+    not accepted?
   end
 
   def rejected?
